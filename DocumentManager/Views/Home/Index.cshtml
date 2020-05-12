@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@model DocumentManager.Models.FileModel
+
+@{ string LogFileName = "Log" + System.DateTime.Now + ".txt";
+    LogFileName = LogFileName.Replace("/", "_");
+    LogFileName = LogFileName.Replace(":", "_");
+    Session["LogFileName"] = LogFileName;
+}
+<div class="jumbotron">
+    <h1>Medfer Document Manager</h1>
+    <p class="lead">This POC is for Medefer document management process.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Medefer Documents</h2>
+        <table>
+            <tr>
+                <td>
+                    <h4>Upload File - SQL</h4>
+                    @using (Html.BeginForm("FileUpload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div>
+                            @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                            <br />
+
+                            <input type="submit" value="Upload" />
+                            @ViewBag.Message
+                        </div>
+                    }
+                </td>
+
+                <td>
+                    <h4>Open file from File - Local</h4>
+                    @Html.ActionLink("View", "GalleryLocal", "Home", new { Id = 49 }, new { @class = "", target = "_blank" })
+                </td>
+            </tr>
+        </table>       
+        <br /><br />
+        <p>  @{Html.RenderAction("FileDetails", "Home");}</p>
+    </div>
+</div>

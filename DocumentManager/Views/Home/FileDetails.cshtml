@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DocumentManager.Models.FileDetailsModel>
+
+@{
+    ViewBag.Title = "FileDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+    <head>  
+    </head>
+<body>
+
+    <h4>File Details</h4>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                    @Html.ActionLink("Download", "DownLoadFile", "Home", new { Id = item.Id }, new { @class = "", target = "_blank" }),
+                    @Html.ActionLink("View", "Gallery", "Home", new { Id = item.Id }, new { @class = "", target = "_blank" })                  
+                </td>               
+            </tr>
+        }
+    </table>
+</body>
+</html>
+    

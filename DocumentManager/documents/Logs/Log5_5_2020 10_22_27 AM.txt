@@ -1,0 +1,3 @@
+Before Calling Gallery view - 5/5/2020 10:24:06 AM
+Before Reading the file - 5/5/2020 10:24:06 AM
+After reading the file  - 5/5/2020 10:24:06 AM

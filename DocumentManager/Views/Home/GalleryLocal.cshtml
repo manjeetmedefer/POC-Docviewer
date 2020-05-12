@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "GalleryLocal";
+}
+
+<h2>GalleryLocal</h2>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Gallery - Local</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/Content/docuvieware-min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/annotations.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    <script src="~/Scripts/docuvieware-min.js"></script>
+</head>
+<body>
+    @{
+        GdPicture14.WEB.DocuVieware docuVieware = new GdPicture14.WEB.DocuVieware
+        {
+            ID = "DocuVieware1",
+            Timeout = MvcApplication.SESSION_TIMEOUT,
+            Height = new System.Web.UI.WebControls.Unit("100%"),
+            Width = new System.Web.UI.WebControls.Unit("100%"),
+            DisableAnnotationDrawingModePanel = true,
+            SinglePageView = false,
+            ForceScrollBars = false,
+            AllowedExportFormats = "*",
+            MaxUploadSize = 52428800,
+            EnableMultipleThumbnailSelection = false,
+            EnableTwainAcquisitionButton = false,
+            EnableFormFieldsEdition = true,
+            EnableSaveButton = false,
+            EnableFileUploadButton = false,
+            EnableLoadFromUriButton = false,
+            EnablePrintButton = false,
+            ShowAnnotationsCommentsSnapIn = false,
+            ShowAnnotationsSnapIn = false,
+            ShowRedactionSnapIn = false
+        };
+
+
+        string LogFileName =  System.Web.HttpContext.Current.Session["LogFileName"].ToString();
+        string log = string.Empty;
+        log += ("Before read from Local file - " + DateTime.Now + System.Environment.NewLine);
+        docuVieware.LoadFromStream(new FileStream(MvcApplication.GetDocumentsDirectory()+"\\csharp_tutorial.pdf", FileMode.Open, FileAccess.Read), true, "csharp_tutorial.pdf");
+        log += ("After read from local file- " + DateTime.Now + System.Environment.NewLine);
+
+
+        log += ("Before Render - " + DateTime.Now + System.Environment.NewLine);
+        docuVieware.RenderControl(Output);
+        log += ("After Render - " + DateTime.Now + System.Environment.NewLine);
+
+
+        System.IO.File.AppendAllText(@MvcApplication.GetDocumentsDirectory() + "\\Logs\\" + LogFileName + "", log);
+        docuVieware.Dispose();
+    }
+    <script>
+        $(document).ready(function (e) {
+            DocuViewareAPI.RegisterOnNewDocumentLoaded('DocuVieware1',
+                function onNewDocumentLoaded() {
+                    DocuViewareAPI.SelectAnnotationsSnapIn('DocuVieware1');
+                });
+        });
+    </script>
+</body>
+</html>
+

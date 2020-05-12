@@ -1,0 +1,71 @@
+﻿@model DocumentManager.Models.FileDetailsModel
+
+@{
+    ViewBag.Title = "ViewDocument";
+    var checkTimer = DateTime.Now;
+}
+
+<h2>ViewDocument</h2>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DocuVieware - Annotations Demo.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/Content/docuvieware-min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/annotations.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    <script src="~/Scripts/docuvieware-min.js"></script>
+</head>
+<body>
+    @{
+        GdPicture14.WEB.DocuVieware docuVieware = new GdPicture14.WEB.DocuVieware
+        {
+            ID = "DocuVieware1",
+            // Timeout = MvcApplication.SESSION_TIMEOUT,
+            Height = new System.Web.UI.WebControls.Unit("100%"),
+            Width = new System.Web.UI.WebControls.Unit("100%"),
+            DisableAnnotationDrawingModePanel = true,
+            SinglePageView = false,
+            ForceScrollBars = false,
+            AllowedExportFormats = "*",
+            MaxUploadSize = 52428800,
+            EnableMultipleThumbnailSelection = false,
+            EnableTwainAcquisitionButton = false,
+            EnableFormFieldsEdition = true,
+            EnableSaveButton = false,
+            EnableFileUploadButton = false,
+            EnableLoadFromUriButton = false,
+            EnablePrintButton = false,
+            ShowAnnotationsCommentsSnapIn = false,
+            ShowAnnotationsSnapIn = false,
+            ShowRedactionSnapIn = false
+        };
+
+
+        string path = @"c:\HM\MyTest.txt";
+        StreamWriter sw = File.CreateText(path);
+
+        System.Diagnostics.Debug.WriteLine("Before read - " + DateTime.Now);
+        docuVieware.LoadFromStream(new System.IO.MemoryStream(Model.FileContent), true, Model.FileName);
+        System.Diagnostics.Debug.WriteLine("After read - " + DateTime.Now);
+        System.Diagnostics.Debug.WriteLine("Before Render - " + DateTime.Now);
+        docuVieware.RenderControl(Output);
+        System.Diagnostics.Debug.WriteLine("After Render - " + DateTime.Now);
+
+        docuVieware.Dispose();
+        System.Diagnostics.Debug.WriteLine("Call End - " + DateTime.Now);
+
+    }
+    <script>
+        $(document).ready(function (e) {
+            DocuViewareAPI.RegisterOnNewDocumentLoaded('DocuVieware1',
+                function onNewDocumentLoaded() {
+                    DocuViewareAPI.SelectAnnotationsSnapIn('DocuVieware1');
+                });
+        });
+    </script>
+</body>
+</html>
